@@ -47,8 +47,10 @@ public class GUIPackResources extends AbstractPackResources
         String baseName = installData.getInfo().getInstallerBase();
         File installerDir = new File(baseName).getParentFile();
 
-        if (baseName.contains(File.separator))
-            baseName = baseName.substring(baseName.lastIndexOf(File.separator) + 1);
+        if (baseName.contains("/"))
+            baseName = baseName.substring(baseName.lastIndexOf('/') + 1);
+        else if (baseName.contains("\\"))
+            baseName = baseName.substring(baseName.lastIndexOf('\\') + 1);
 
         String packFileName = baseName + ".pack-" + name + ".jar";
         String path = null;
