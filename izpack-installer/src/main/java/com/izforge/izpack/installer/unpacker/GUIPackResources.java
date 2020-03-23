@@ -13,6 +13,9 @@ import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.logging.Logger;
 
 /**
@@ -45,7 +48,6 @@ public class GUIPackResources extends AbstractPackResources
 
         InstallData installData = getInstallData();
         String baseName = installData.getInfo().getInstallerBase();
-        File installerDir = new File(baseName).getParentFile();
 
         if (baseName.contains("/")) {
             baseName = baseName.substring(baseName.lastIndexOf('/') + 1);
@@ -58,7 +60,7 @@ public class GUIPackResources extends AbstractPackResources
         String path = null;
 
         // Look first in same directory as primary jar, then download it if not found
-        File packLocalFile = new File(installerDir, packFileName);
+        File packLocalFile = new File(installData.getVariable(InstallData.INSTALL_PATH), packFileName);
         if (packLocalFile.exists() && packLocalFile.canRead())
         {
             logger.info("Found local pack " + packLocalFile.getAbsolutePath());
@@ -74,11 +76,18 @@ public class GUIPackResources extends AbstractPackResources
             logger.info("Downloading remote pack " + packURL);
             String tempFolder = IoHelper.translatePath(installData.getInfo().getUninstallerPath()
                     + WEB_TEMP_SUB_PATH, installData.getVariables());
-            String tempFile;
+            File tempFile;
             try
             {
-                tempFile = WebRepositoryAccessor.getCachedUrl(packURL, tempFolder);
-                packLocalFile = new File(tempFile);
+                tempFile = new File(WebRepositoryAccessor.getCachedUrl(packURL, tempFolder, packFileName));
+
+                packLocalFile = Files.copy(
+                        tempFile.toPath(),
+                        Paths.get(installData.getVariable(InstallData.INSTALL_PATH), tempFile.getName()),
+                        StandardCopyOption.REPLACE_EXISTING
+                ).toFile();
+
+                Files.delete(tempFile.toPath());
             }
             catch (InterruptedIOException exception)
             {
@@ -89,7 +98,7 @@ public class GUIPackResources extends AbstractPackResources
                 throw new ResourceException("Failed to read " + webDirURL, exception);
             }
 
-            path = "jar:" + packLocalFile.getPath() + "!/packs/pack-" + name;
+            path = "jar:file:/" + packLocalFile.getPath() + "!/packs/pack-" + name;
         }
 
         try

@@ -56,7 +56,7 @@ public class WebRepositoryAccessor
      * @param url the base URL
      * @return the url
      */
-    public static String getCachedUrl(String url, String tempFolder) throws IOException
+    public static String getCachedUrl(String url, String tempFolder, String packFileName) throws IOException
     {
         byte[] raw = new byte[BUFFER_SIZE];
         WebAccessor webAccessor = new WebAccessor(null);
@@ -66,9 +66,9 @@ public class WebRepositoryAccessor
 
         tempDir.mkdirs();
 
-        File temp = File.createTempFile("izpacktempfile", "jar", new File(tempFolder));
+        File temp = new File(tempFolder, packFileName);
         FileOutputStream fos = new FileOutputStream(temp);
-        String path = "file:///" + temp.getAbsolutePath();
+        String path = temp.getAbsolutePath();
         while (r > 0)
         {
             fos.write(raw, 0, r);
