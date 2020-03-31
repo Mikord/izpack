@@ -51,6 +51,7 @@ import com.izforge.izpack.compiler.util.AntPathMatcher;
 import com.izforge.izpack.compiler.util.CompilerClassLoader;
 import com.izforge.izpack.compiler.util.compress.ArchiveStreamFactory;
 import com.izforge.izpack.compiler.xml.*;
+import com.izforge.izpack.core.data.DefaultVariables;
 import com.izforge.izpack.core.data.DynamicInstallerRequirementValidatorImpl;
 import com.izforge.izpack.core.data.DynamicVariableImpl;
 import com.izforge.izpack.core.resource.ResourceManager;
@@ -79,6 +80,7 @@ import com.izforge.izpack.panels.userinput.field.SimpleChoiceReader;
 import com.izforge.izpack.panels.userinput.field.UserInputPanelSpec;
 import com.izforge.izpack.panels.userinput.field.button.ButtonFieldReader;
 import com.izforge.izpack.util.FileUtil;
+import com.izforge.izpack.util.IoHelper;
 import com.izforge.izpack.util.OsConstraintHelper;
 import com.izforge.izpack.util.PlatformModelMatcher;
 import com.izforge.izpack.util.file.DirectoryScanner;
@@ -802,7 +804,11 @@ public class CompilerConfig extends Thread
         {
 
             // Trivial initialisations
-            String name = xmlCompilerHelper.requireAttribute(packElement, "name");
+            String name = IoHelper.translatePath(
+                xmlCompilerHelper.requireAttribute(packElement, "name"),
+                new DefaultVariables(packager.getVariables())
+            );
+
             String id = packElement.getAttribute("id");
             String packImgId = packElement.getAttribute("packImgId");
 

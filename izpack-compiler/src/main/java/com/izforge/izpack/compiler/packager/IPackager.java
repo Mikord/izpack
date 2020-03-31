@@ -76,6 +76,8 @@ public interface IPackager
      */
     Properties getVariables();
 
+    String getVariable(String name);
+
     /**
      * Add a custom data like custom actions, where order is important. Only one copy of the class
      * files neeed are inserted in the installer.

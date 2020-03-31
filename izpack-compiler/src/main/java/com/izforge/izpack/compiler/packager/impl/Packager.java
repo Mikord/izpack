@@ -22,16 +22,15 @@ package com.izforge.izpack.compiler.packager.impl;
 
 import com.izforge.izpack.api.adaptator.IXMLElement;
 import com.izforge.izpack.api.adaptator.impl.XMLElementImpl;
-import com.izforge.izpack.api.data.Pack;
-import com.izforge.izpack.api.data.PackCompression;
-import com.izforge.izpack.api.data.PackFile;
-import com.izforge.izpack.api.data.PackInfo;
+import com.izforge.izpack.api.data.*;
 import com.izforge.izpack.api.rules.RulesEngine;
 import com.izforge.izpack.compiler.data.CompilerData;
 import com.izforge.izpack.compiler.listener.PackagerListener;
 import com.izforge.izpack.compiler.merge.CompilerPathResolver;
+import com.izforge.izpack.core.data.DefaultVariables;
 import com.izforge.izpack.merge.MergeManager;
 import com.izforge.izpack.merge.resolve.MergeableResolver;
+import com.izforge.izpack.util.IoHelper;
 import com.izforge.izpack.util.NoCloseOutputStream;
 import org.apache.commons.compress.compressors.CompressorException;
 import org.apache.commons.compress.compressors.CompressorStreamFactory;
@@ -73,6 +72,8 @@ public class Packager extends PackagerBase
     private static final Logger logger = Logger.getLogger(Packager.class.getName());
 
     private final CompilerData compilerData;
+
+    private final String BUILD_DIRECTORY_VAR = "installer.build.directory";
 
     /**
      * Constructs a <tt>Packager</tt>.
@@ -153,7 +154,10 @@ public class Packager extends PackagerBase
             if (packSeparateJars())
             {
                 // TODO REFACTOR : Use a mergeManager for each packages that will be added to the main merger
-                String jarFile = getInfo().getInstallerBase() + ".pack-" + pack.getName() + ".jar";
+                String jarFile = IoHelper.translatePath(
+                    this.getVariable(BUILD_DIRECTORY_VAR) + "/" + pack.getName(),
+                    new DefaultVariables(this.getVariables())
+                ) + ".jar";
                 packJar = getJarOutputStream(new File(jarFile));
                 entry = new ZipEntry(streamResourceName);
             } else

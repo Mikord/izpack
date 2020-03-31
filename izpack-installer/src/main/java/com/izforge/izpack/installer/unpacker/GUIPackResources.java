@@ -47,16 +47,8 @@ public class GUIPackResources extends AbstractPackResources
         InputStream result;
 
         InstallData installData = getInstallData();
-        String baseName = installData.getInfo().getInstallerBase();
 
-        if (baseName.contains("/")) {
-            baseName = baseName.substring(baseName.lastIndexOf('/') + 1);
-        }
-        else if (baseName.contains("\\")) {
-            baseName = baseName.substring(baseName.lastIndexOf('\\') + 1);
-        }
-
-        String packFileName = baseName + ".pack-" + name + ".jar";
+        String packFileName = name + ".jar";
         String path = null;
 
         // Look first in same directory as primary jar, then download it if not found
@@ -72,7 +64,7 @@ public class GUIPackResources extends AbstractPackResources
         }
         else
         {
-            String packURL = webDirURL + "/" + baseName + ".pack-" + name.replace(" ", "%20") + ".jar";
+            String packURL = webDirURL + "/" + name.replace(" ", "%20") + ".jar";
             logger.info("Downloading remote pack " + packURL);
             String tempFolder = IoHelper.translatePath(installData.getInfo().getUninstallerPath()
                     + WEB_TEMP_SUB_PATH, installData.getVariables());

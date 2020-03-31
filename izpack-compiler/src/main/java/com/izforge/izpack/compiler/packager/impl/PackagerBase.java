@@ -285,6 +285,12 @@ public abstract class PackagerBase implements IPackager
     }
 
     @Override
+    public String getVariable(String name)
+    {
+        return properties.getProperty(name);
+    }
+
+    @Override
     public void setGUIPrefs(GUIPrefs prefs)
     {
         sendMsg("Setting the GUI preferences", PackagerListener.MSG_VERBOSE);
