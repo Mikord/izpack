@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.izpack</groupId>
   <artifactId>izpack</artifactId>
-  <version>5.1.4-cg</version>
+  <version>5.1.5-cg-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>IzPack parent</name>
   <description>
@@ -30,12 +30,12 @@
     <repository>
       <id>mikord</id>
       <name>ASD CG Release repository</name>
-      <url>http://repo.cg.ru/repository/libs-releases-local</url>
+      <url>http://repo.asd.center.cg/repository/libs-releases-local</url>
     </repository>
     <snapshotRepository>
       <id>snapshots</id>
       <name>ASD CG Snapshots repository</name>
-      <url>http://repo.cg.ru/repository/libs-snapshots-local</url>
+      <url>http://repo.asd.center.cg/repository/libs-snapshots-local</url>
     </snapshotRepository>
     <!-- We do not deploy directly to the staging repository, but via the Nexus staging plugin -->
     <!--
@@ -396,6 +396,16 @@
         <artifactId>jline</artifactId>
         <version>2.12.1</version>
       </dependency>
+      <!--<dependency>-->
+        <!--<groupId>com.fasterxml.jackson.core</groupId>-->
+        <!--<artifactId>jackson-core</artifactId>-->
+        <!--<version>2.10.0</version>-->
+      <!--</dependency>-->
+      <!--<dependency>-->
+        <!--<groupId>com.fasterxml.jackson.core</groupId>-->
+        <!--<artifactId>jackson-databind</artifactId>-->
+        <!--<version>2.10.0</version>-->
+      <!--</dependency>-->
     </dependencies>
   </dependencyManagement>
 

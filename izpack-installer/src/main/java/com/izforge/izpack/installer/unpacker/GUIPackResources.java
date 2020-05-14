@@ -7,15 +7,13 @@ import com.izforge.izpack.api.resource.Resources;
 import com.izforge.izpack.installer.web.WebRepositoryAccessor;
 import com.izforge.izpack.util.IoHelper;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InterruptedIOException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
 
 /**
@@ -64,7 +62,7 @@ public class GUIPackResources extends AbstractPackResources
         }
         else
         {
-            String packURL = webDirURL + "/" + name.replace(" ", "%20") + ".jar";
+            String packURL = webDirURL + "/" + name.replace(" ", "%20");
             logger.info("Downloading remote pack " + packURL);
             String tempFolder = IoHelper.translatePath(installData.getInfo().getUninstallerPath()
                     + WEB_TEMP_SUB_PATH, installData.getVariables());
@@ -89,7 +87,10 @@ public class GUIPackResources extends AbstractPackResources
             {
                 throw new ResourceException("Failed to read " + webDirURL, exception);
             }
-
+            catch (NoSuchAlgorithmException exception)
+            {
+                throw new ResourceException("Failed to get the checksum for " + webDirURL, exception);
+            }
             path = "jar:file:/" + packLocalFile.getPath() + "!/packs/pack-" + name;
         }
 

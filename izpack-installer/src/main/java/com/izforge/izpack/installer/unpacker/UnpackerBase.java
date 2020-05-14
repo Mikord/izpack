@@ -25,6 +25,7 @@ package com.izforge.izpack.installer.unpacker;
 import com.izforge.izpack.api.data.*;
 import com.izforge.izpack.api.event.InstallerListener;
 import com.izforge.izpack.api.event.ProgressListener;
+import com.izforge.izpack.api.exception.ChecksumsNotMatchException;
 import com.izforge.izpack.api.exception.InstallerException;
 import com.izforge.izpack.api.exception.IzPackException;
 import com.izforge.izpack.api.exception.ResourceInterruptedException;
@@ -306,7 +307,18 @@ public abstract class UnpackerBase implements IUnpacker
 
             listener.stopAction();
 
-            if (exception instanceof ResourceInterruptedException)
+            if (exception instanceof ChecksumsNotMatchException)
+            {
+                AbstractUIHandler handler = new PromptUIHandler(prompt);
+                if (handler.askQuestion("Error",
+                    messages.get("PacksPanel.downloadError") + "\n" + messages.get("installer.again"),
+                    AbstractUIHandler.CHOICES_YES_NO,
+                    AbstractUIHandler.ANSWER_NO)
+                    == AbstractUIHandler.ANSWER_YES)
+                {
+                    unpack();
+                }
+            } else if (exception instanceof ResourceInterruptedException)
             {
                 prompt.message(Type.INFORMATION, messages.get("installer.cancelled"));
             } else

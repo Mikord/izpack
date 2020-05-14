@@ -58,6 +58,7 @@
     <str id="installer.platform" txt="Platform: {0}"/>
     <str id="installer.version" txt="Framework: {0}"/>
     <str id="installer.finished" txt="Installation finished"/>
+    <str id="installer.again" txt="Попробовать заново?"/>
 
     <!-- Uninstaller specific strings -->
     <str id="uninstaller.warning" txt="Установленные программы будут удалены!"/>
@@ -112,6 +113,7 @@
     <str id="ImgPacksPanel.dependencyList" txt="Зависимости"/>
     <str id="PacksPanel.notEnoughSpace" txt="Недостаточно места для установки приложения."/>
     <str id="PacksPanel.notAscertainable" txt="не установлено"/>
+    <str id="PacksPanel.downloadError" txt="Во время загрузки пака произошла ошибка"/>
 
     <str id="InstallPanel.info" txt="Подготовка к установке программы завершена:"/>
     <str id="InstallPanel.install" txt="Установить!"/>
