@@ -9,29 +9,29 @@
                  xsi:schemaLocation="http://izpack.org/schema/langpack http://izpack.org/schema/5.0/izpack-langpack-5.0.xsd">
 
     <!-- ConsolePrompt strings -->
-    <str id="ConsolePrompt.okCancel" txt="Enter O for OK, C to Cancel: "/>
-    <str id="ConsolePrompt.yesNo" txt="Enter Y for Yes, N for No: "/>
-    <str id="ConsolePrompt.yesNoCancel" txt="Enter Y for Yes, N for No, or C to Cancel: "/>
+    <str id="ConsolePrompt.okCancel" txt="Нажмите O(OK), или C(Cancel): "/>
+    <str id="ConsolePrompt.yesNo" txt="Нажмите Y(Yes) или N(No): "/>
+    <str id="ConsolePrompt.yesNoCancel" txt="Нажмите Y(Yes), N(No) или C(Cancel): "/>
     <str id="ConsolePrompt.ok" txt="O"/>
     <str id="ConsolePrompt.cancel" txt="C"/>
     <str id="ConsolePrompt.yes" txt="Y"/>
     <str id="ConsolePrompt.no" txt="N"/>
 
     <!-- ConsoleInstaller strings -->
-    <str id="ConsoleInstaller.continueQuitRedisplay" txt="Press 1 to continue, 2 to quit, 3 to redisplay"/>
-    <str id="ConsoleInstaller.acceptRejectRedisplay" txt="Press 1 to accept, 2 to reject, 3 to redisplay"/>
-    <str id="ConsoleInstaller.redisplayQuit" txt="Press 1 to redisplay, 2 to quit"/>
-    <str id="ConsoleInstaller.permissionError" txt="Administrative privileges required. Please re-run the installer with administrative privileges."/>
+    <str id="ConsoleInstaller.continueQuitRedisplay" txt="Нажмите 1 - продолжить; 2 - выйти; 3 - вернуться к предыдущему вопросу"/>
+    <str id="ConsoleInstaller.acceptRejectRedisplay" txt="Нажмите 1 - принять; 2 - отклонить; 3 - вернуться к предыдущему вопросу"/>
+    <str id="ConsoleInstaller.redisplayQuit" txt="Нажмите 1 - вернуться к предыдущему вопросу; 2 - выйти"/>
+    <str id="ConsoleInstaller.permissionError" txt="Требуются права администратора. Пожалуйста, перезапустите установщик с правами администратора."/>
     <str id="ConsoleInstaller.inputSelection" txt="Input selection: "/>
     <str id="ConsoleInstaller.pagingMore" txt="More"/>
     <str id="ConsoleInstaller.aborted.PressedCTRL-C" txt="CTRL-C pressed"/>
-    <str id="ConsoleInstaller.aborted.LicenseRejected" txt="License rejected"/>
+    <str id="ConsoleInstaller.aborted.LicenseRejected" txt="Лицензия отклонена"/>
     <str id="ConsoleInstaller.aborted.PressedQuit" txt="Quit pressed"/>
     <str id="ConsoleInstaller.shutdown.pendingFileOperations" txt="There are file operations pending after reboot"/>
-    <str id="ConsoleInstaller.shutdown.rebootingNow" txt="Rebooting now automatically"/>
-    <str id="ConsoleInstaller.shutdown.done" txt="Console installation done"/>
-    <str id="ConsoleInstaller.shutdown.aborted" txt="Console installation ABORTED by the user!"/>
-    <str id="ConsoleInstaller.shutdown.failed" txt="Console installation FAILED!"/>
+    <str id="ConsoleInstaller.shutdown.rebootingNow" txt="Автоматическая перезагрузка"/>
+    <str id="ConsoleInstaller.shutdown.done" txt="Установка с консоли завершена"/>
+    <str id="ConsoleInstaller.shutdown.aborted" txt="Установка с консоли прервана пользователем!"/>
+    <str id="ConsoleInstaller.shutdown.failed" txt="Ошибка при установке с консоли!"/>
 
     <!-- General installer strings -->
     <str id="installer.title" txt="IzPack - Установка "/>
@@ -46,18 +46,18 @@
     <str id="installer.no" txt="Нет"/>
     <str id="installer.cancel" txt="Отказ"/>
     <str id="installer.error" txt="Ошибка"/>
-    <str id="installer.errorMessage" txt="An error occured"/>
+    <str id="installer.errorMessage" txt="Произошла ошибка"/>
     <str id="installer.close" txt="Close"/>
     <str id="installer.showDetails" txt="Show Details"/>
     <str id="installer.hideDetails" txt="Hide Details"/>
     <str id="installer.copy" txt="Copy"/>
-    <str id="installer.sendReport" txt="Send Report"/>
-    <str id="installer.continueQuestion" txt="Continue anyway?"/>
-    <str id="installer.cancelled" txt="Installation cancelled"/>
-    <str id="installer.started" txt="Installation started"/>
+    <str id="installer.sendReport" txt="Отправить жалобу"/>
+    <str id="installer.continueQuestion" txt="Продолжить в любом случае?"/>
+    <str id="installer.cancelled" txt="Установка отменена"/>
+    <str id="installer.started" txt="Установка началась"/>
     <str id="installer.platform" txt="Platform: {0}"/>
     <str id="installer.version" txt="Framework: {0}"/>
-    <str id="installer.finished" txt="Installation finished"/>
+    <str id="installer.finished" txt="Установка завершена"/>
     <str id="installer.again" txt="Попробовать заново?"/>
 
     <!-- Uninstaller specific strings -->
