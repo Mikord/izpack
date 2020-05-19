@@ -54,10 +54,10 @@
     <str id="installer.sendReport" txt="Отправить жалобу"/>
     <str id="installer.continueQuestion" txt="Продолжить в любом случае?"/>
     <str id="installer.cancelled" txt="Установка отменена"/>
-    <str id="installer.started" txt="Установка началась"/>
+    <str id="installer.started" txt="Installation started"/>
     <str id="installer.platform" txt="Platform: {0}"/>
     <str id="installer.version" txt="Framework: {0}"/>
-    <str id="installer.finished" txt="Установка завершена"/>
+    <str id="installer.finished" txt="Installation finished"/>
     <str id="installer.again" txt="Попробовать заново?"/>
 
     <!-- Uninstaller specific strings -->
