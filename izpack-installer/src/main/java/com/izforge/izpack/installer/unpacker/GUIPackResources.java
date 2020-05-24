@@ -69,7 +69,9 @@ public class GUIPackResources extends AbstractPackResources
             File tempFile;
             try
             {
-                tempFile = new File(WebRepositoryAccessor.getCachedUrl(packURL, tempFolder, packFileName));
+                tempFile = new File(
+                    WebRepositoryAccessor.getCachedUrl(packURL, tempFolder, packFileName, true)
+                );
 
                 packLocalFile = Files.copy(
                         tempFile.toPath(),
