@@ -73,13 +73,11 @@ public class GUIPackResources extends AbstractPackResources
                     WebRepositoryAccessor.getCachedUrl(packURL, tempFolder, packFileName, true)
                 );
 
-                packLocalFile = Files.copy(
+                packLocalFile = Files.move(
                         tempFile.toPath(),
                         Paths.get(installData.getVariable(InstallData.INSTALL_PATH), tempFile.getName()),
                         StandardCopyOption.REPLACE_EXISTING
                 ).toFile();
-
-                Files.delete(tempFile.toPath());
             }
             catch (InterruptedIOException exception)
             {
