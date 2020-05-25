@@ -21,11 +21,13 @@
 
 package com.izforge.izpack.installer.web;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import com.izforge.izpack.api.exception.ChecksumsNotMatchException;
 
 /**
  * This class enumerates the availabe packs at the web repository. Parses the config files
@@ -47,6 +49,7 @@ public class WebRepositoryAccessor
      */
     private static final int BUFFER_SIZE = 1000000;
 
+    private static final String CHECKSUM_TYPE = "md5";
     /**
      * First download the jar file. The create the input stream from the
      * downloaded file. This is because the Jar connection's openInputStream
@@ -56,11 +59,16 @@ public class WebRepositoryAccessor
      * @param url the base URL
      * @return the url
      */
-    public static String getCachedUrl(String url, String tempFolder, String packFileName) throws IOException
-    {
+    public static String getCachedUrl(String url, String tempFolder, String packFileName)
+        throws IOException, NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance(CHECKSUM_TYPE);
+
+        String expectedChecksum = nexusPackChecksum(url);
+
         byte[] raw = new byte[BUFFER_SIZE];
         WebAccessor webAccessor = new WebAccessor(null);
-        InputStream in = webAccessor.openInputStream(new URL(url));
+        String packUrl = url + ".jar";
+        InputStream in = webAccessor.openInputStream(new URL(packUrl));
         int r = in.read(raw);
         File tempDir = new File(tempFolder);
 
@@ -77,6 +85,50 @@ public class WebRepositoryAccessor
         in.close();
         fos.close();
 
+        if ( ! WebRepositoryAccessor.calculateChecksum(temp.getPath(), md).equals(expectedChecksum)) {
+            throw new ChecksumsNotMatchException("File checksums do not match");
+        }
+
         return path;
+    }
+
+    private static String nexusPackChecksum(String url)
+        throws IOException {
+
+        URL checksumUrl = new URL(url + "/checksum/" + CHECKSUM_TYPE);
+
+        HttpURLConnection connection = (HttpURLConnection) checksumUrl.openConnection();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+        StringBuilder response = new StringBuilder();
+        String responseLine;
+        while ((responseLine = reader.readLine()) != null) {
+            response.append(responseLine.trim());
+        }
+
+        return response.toString().replace("\"", "");
+    }
+
+    private static String calculateChecksum(String filepath, MessageDigest md) throws IOException {
+        InputStream fis = null;
+        try {
+            fis = new FileInputStream(filepath);
+            byte[]buffer = new byte[1024];
+            int nread;
+            while ((nread = fis.read(buffer)) != -1) {
+                md.update(buffer, 0, nread);
+            }
+        }
+        finally {
+            if (fis != null) {
+                fis.close();
+            }
+        }
+
+        StringBuilder result = new StringBuilder();
+        for (byte b : md.digest()) {
+            result.append(String.format("%02x", b));
+        }
+        return result.toString();
     }
 }
