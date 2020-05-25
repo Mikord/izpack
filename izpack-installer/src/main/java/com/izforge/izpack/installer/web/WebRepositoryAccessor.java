@@ -59,16 +59,25 @@ public class WebRepositoryAccessor
      * @param url the base URL
      * @return the url
      */
-    public static String getCachedUrl(String url, String tempFolder, String packFileName)
+    public static String getCachedUrl(String url, String tempFolder, String packFileName,
+        boolean isShowDialog)
         throws IOException, NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance(CHECKSUM_TYPE);
 
         String expectedChecksum = nexusPackChecksum(url);
 
         byte[] raw = new byte[BUFFER_SIZE];
-        WebAccessor webAccessor = new WebAccessor(null);
         String packUrl = url + ".jar";
-        InputStream in = webAccessor.openInputStream(new URL(packUrl));
+
+        InputStream in;
+        if (isShowDialog) {
+            WebAccessor webAccessor = new WebAccessor(null);
+            in = webAccessor.openInputStream(new URL(packUrl));
+        }
+        else {
+            in = new URL(packUrl).openStream();
+        }
+
         int r = in.read(raw);
         File tempDir = new File(tempFolder);
 

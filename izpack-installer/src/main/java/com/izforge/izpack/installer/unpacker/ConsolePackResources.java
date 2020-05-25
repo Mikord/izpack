@@ -23,11 +23,18 @@ package com.izforge.izpack.installer.unpacker;
 
 import com.izforge.izpack.api.data.InstallData;
 import com.izforge.izpack.api.exception.ResourceException;
+import com.izforge.izpack.api.exception.ResourceInterruptedException;
 import com.izforge.izpack.api.resource.Resources;
+import com.izforge.izpack.installer.web.WebRepositoryAccessor;
 import com.izforge.izpack.util.IoHelper;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
 
 /**
@@ -58,44 +65,58 @@ public class ConsolePackResources extends AbstractPackResources
         InputStream result;
 
         InstallData installData = getInstallData();
-        String baseName = installData.getInfo().getInstallerBase();
-        File installerDir = new File(baseName).getParentFile();
 
-        if (baseName.contains("/"))
-            baseName = baseName.substring(baseName.lastIndexOf('/'));
-
-        String packFileName = baseName + ".pack-" + name + ".jar";
+        String packFileName = name + ".jar";
+        String path = null;
 
         // Look first in same directory as primary jar, then download it if not found
-        File packLocalFile = new File(installerDir, packFileName);
+        File packLocalFile = new File(installData.getVariable(InstallData.INSTALL_PATH), packFileName);
         if (packLocalFile.exists() && packLocalFile.canRead())
         {
             logger.info("Found local pack " + packLocalFile.getAbsolutePath());
+            try {
+                path = "jar:" + packLocalFile.toURI().toURL() + "!/packs/pack-" + name;
+            } catch(MalformedURLException exception) {
+                throw new ResourceException("Malformed URL", exception);
+            }
         }
         else
         {
-            String packURL = webDirURL + "/" + packFileName.replace(" ", "%20");
+            String packURL = webDirURL + "/" + name.replace(" ", "%20");
+            logger.info("Downloading remote pack " + packURL);
             String tempFolder = IoHelper.translatePath(installData.getInfo().getUninstallerPath()
                     + WEB_TEMP_SUB_PATH, installData.getVariables());
-            File tempDir = new File(tempFolder);
-            tempDir.mkdirs();
-
+            File tempFile;
             try
             {
-                logger.info("Downloading remote pack " + packURL);
-                packLocalFile = File.createTempFile("izpacktempfile", "jar", new File(tempFolder));
-                InputStream webStream = new URL(packURL).openStream();
-                write(webStream, packLocalFile);
+                tempFile = new File(
+                    WebRepositoryAccessor.getCachedUrl(packURL, tempFolder, packFileName, false)
+                );
+
+                packLocalFile = Files.move(
+                    tempFile.toPath(),
+                    Paths.get(installData.getVariable(InstallData.INSTALL_PATH), tempFile.getName()),
+                    StandardCopyOption.REPLACE_EXISTING
+                ).toFile();
+            }
+            catch (InterruptedIOException exception)
+            {
+                throw new ResourceInterruptedException("Retrieval of " + webDirURL + " interrupted", exception);
             }
             catch (IOException exception)
             {
-                throw new ResourceException("Failed to read pack", exception);
+                throw new ResourceException("Failed to read " + webDirURL, exception);
             }
+            catch (NoSuchAlgorithmException exception)
+            {
+                throw new ResourceException("Failed to get the checksum for " + webDirURL, exception);
+            }
+            path = "jar:file:/" + packLocalFile.getPath() + "!/packs/pack-" + name;
         }
 
         try
         {
-            URL url = new URL("jar:" + packLocalFile.toURI().toURL() + "!/packs/pack-" + name);
+            URL url = new URL(path);
             result = url.openStream();
         }
         catch (IOException exception)
@@ -103,18 +124,5 @@ public class ConsolePackResources extends AbstractPackResources
             throw new ResourceException("Failed to read pack", exception);
         }
         return result;
-    }
-
-    private static void write(InputStream input, File file) throws IOException
-    {
-        OutputStream output = new FileOutputStream(file);
-        int letter = 0;
-        byte[] buffer = new byte[1024];
-        while ((letter = input.read(buffer)) != -1)
-        {
-            output.write(buffer, 0, letter);
-        }
-        output.flush();
-        output.close();
     }
 }
