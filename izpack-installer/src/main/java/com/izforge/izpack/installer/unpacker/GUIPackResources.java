@@ -6,6 +6,7 @@ import com.izforge.izpack.api.exception.ResourceInterruptedException;
 import com.izforge.izpack.api.resource.Resources;
 import com.izforge.izpack.installer.web.WebRepositoryAccessor;
 import com.izforge.izpack.util.IoHelper;
+import com.izforge.izpack.util.OsVersion;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -91,7 +92,14 @@ public class GUIPackResources extends AbstractPackResources
             {
                 throw new ResourceException("Failed to get the checksum for " + webDirURL, exception);
             }
-            path = "jar:file:/" + packLocalFile.getPath() + "!/packs/pack-" + name;
+            String startPath;
+            if (OsVersion.IS_WINDOWS) {
+                startPath = "jar:file:/";
+            }
+            else {
+                startPath = "jar:file:";
+            }
+            path = startPath + packLocalFile.getPath() + "!/packs/pack-" + name;
         }
 
         try
