@@ -30,12 +30,12 @@
     <repository>
       <id>mikord</id>
       <name>ASD CG Release repository</name>
-      <url>http://repo.asd.center.cg/repository/libs-releases-local</url>
+      <url>https://repo.micord.ru/repository/libs-releases-local</url>
     </repository>
     <snapshotRepository>
       <id>snapshots</id>
       <name>ASD CG Snapshots repository</name>
-      <url>http://repo.asd.center.cg/repository/libs-snapshots-local</url>
+      <url>https://repo.micord.ru/repository/libs-snapshots-local</url>
     </snapshotRepository>
     <!-- We do not deploy directly to the staging repository, but via the Nexus staging plugin -->
     <!--
