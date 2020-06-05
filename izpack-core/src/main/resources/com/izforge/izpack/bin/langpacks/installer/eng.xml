@@ -92,6 +92,7 @@
     <str id="installer.platform" txt="Platform: {0}"/>
     <str id="installer.version" txt="Framework: {0}"/>
     <str id="installer.finished" txt="Installation finished"/>
+    <str id="installer.again" txt="Try again?"/>
 
     <!-- Uninstaller specific strings -->
     <str id="uninstaller.warning" txt="This will remove the installed application!"/>
@@ -172,6 +173,7 @@
     <str id="PacksPanel.notEnoughSpace"
          txt="Disk space required for the installation exceeds available disk space."/>
     <str id="PacksPanel.notAscertainable" txt="not ascertainable"/>
+    <str id="PacksPanel.downloadError" txt="An error occurred while loading the pack"/>
 
     <!-- InstallPanel strings -->
     <str id="InstallPanel.info" txt="Click 'Install!' to begin the installation process"/>
